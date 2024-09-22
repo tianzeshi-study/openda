@@ -26,9 +26,9 @@ jobs:
 
       - name: Install Visual Studio components
         run: |
-          # 安装 Visual Studio 2019
-          $vsInstaller = "C:\ProgramData\Microsoft\VisualStudio\Installer\vs_installer.exe"
-          & $vsInstaller --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.Universal --includeRecommended --quiet --wait
+          # $vsInstaller = "C:\ProgramData\Microsoft\VisualStudio\Installer\vs_installer.exe"
+          # & $vsInstaller --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.Universal --includeRecommended --quiet --wait
+          vs_installer.exe  --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.Universal --includeRecommended --quiet --wait
 
       - name: Set up Python
         uses: actions/setup-python@v2
