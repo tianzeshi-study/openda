@@ -21,10 +21,10 @@ jobs:
         with:
           python-version: '3.11.x'  # 指定 3.11 的次版本
 
-      - name: Install Visual Studio components
-        run: |
-          choco install visualstudio2022community --version=17.0.0 --params "/IncludeRecommended"
-          refreshenv
+      # - name: Install Visual Studio components
+        # run: |
+          # choco install visualstudio2022community --version=17.0.0 --params "/IncludeRecommended"
+          # refreshenv
 
       - name: Install dependencies
         run: |
