@@ -1,0 +1,17 @@
+{
+  "singleQuote": true,
+  "overrides": [
+    {
+      "files": ["**/*.css"],
+      "options": {
+        "singleQuote": false
+      }
+    },
+    {
+      "files": ["**/*.yml"],
+      "options": {
+        "singleQuote": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - ci
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11.x'  # 指定 3.11 的次版本
+
+      - name: Install Visual Studio components
+        run: |
+          choco install visualstudio2022community --version=17.0.0 --params "/IncludeRecommended"
+          refreshenv
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install scons
+
+      - name: Run SCons build
+        run: |
+          scons source
+          scons dist
+          scons launcher
+
+      - name: Output build artifacts
+        run: |
+          echo "Artifacts generated:"
+          dir  # 列出生成的产物

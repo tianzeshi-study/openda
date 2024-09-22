@@ -1,0 +1,102 @@
+###
+#This file is a part of the NVDA project.
+#URL: https://www.nvaccess.org/
+#Copyright 2011-2018 NV Access Limited, Joseph Lee, Babbage B.V.
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License version 2.0, as published by
+#the Free Software Foundation.
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#This license can be found at:
+#http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+###
+
+import os
+import re
+import glob
+from SCons.Tool.MSCommon.vc import find_vc_pdir
+import typing
+from SCons.Environment import Environment
+from SCons.Environment import Base
+
+Import([
+	"thirdPartyEnv",
+	"sourceDir",
+])
+sourceDir:Base = sourceDir
+thirdPartyEnv: Environment = thirdPartyEnv
+env: Environment = typing.cast(Environment, thirdPartyEnv.Clone())
+
+louisRootDir = env.Dir("#include/liblouis")
+louisSourceDir = louisRootDir.Dir("liblouis")
+outDir = sourceDir.Dir("louis")
+signExec=env['signExec'] if env['certFile'] else None
+
+RE_AC_INIT = re.compile(r"^AC_INIT\(\[(?P<package>.*)\], \[(?P<version>.*)\], \[(?P<bugReport>.*)\], \[(?P<tarName>.*)\], \[(?P<url>.*)\]\)")
+def getLouisVersion():
+	# Get the version from configure.ac.
+	with open(louisRootDir.File("configure.ac").abspath) as f:
+		for line in f:
+			m = RE_AC_INIT.match(line)
+			if m:
+				return m.group("version")
+	return "unknown"
+
+# Liblouis is build with Clang, as Microsoft Visual C++ is unable to build C99 code.
+clangDirs = glob.glob(os.path.join(
+    find_vc_pdir(env, env.get("MSVC_VERSION")),
+    r"Tools\Llvm\bin"
+))
+if len(clangDirs) == 0:
+	raise RuntimeError(
+		"Could not find the Clang compiler. "
+		"Perhaps the C++ Clang tools for Windows component in visual Studio is not installed"
+	) 
+env['CC'] = 'clang-cl'
+
+# Don't analyze the code as not our project
+if 'analyze' in env['nvdaHelperDebugFlags']:
+	env.Append(CCFLAGS='/analyze-')
+
+env.Append(CPPDEFINES=[
+	# The Visual C++ C Runtime deprecates standard POSIX APIs that conflict with
+	# reserved ISO C names (like strdup) in favour of non-portable conforming
+	# variants that start with an '_'. This removes those deprecation warnings. */
+	"_CRT_NONSTDC_NO_DEPRECATE",
+	("PACKAGE_VERSION", r'\"%s\"' % getLouisVersion()),
+	"WIDECHARS_ARE_UCS4",
+	# Tell liblouis.h that we're exporting liblouis dll functions, not importing them.
+	"_EXPORTING",
+])
+env.Prepend(CPPPATH=[".", louisSourceDir])
+
+# Upstream liblouis compiles without UNICODE defined.
+env['CPPDEFINES'].remove("UNICODE")
+
+liblouisH = env.Substfile("liblouis.h", louisSourceDir.File("liblouis.h.in"),
+	SUBST_DICT={"@WIDECHAR_TYPE@": "unsigned int"})
+
+sourceFiles = [
+	"compileTranslationTable.c",
+	"lou_translateString.c",
+	"lou_backTranslateString.c",
+	"logging.c",
+	"pattern.c",
+	"commonTranslationFunctions.c",
+	"metadata.c",
+	"utils.c",
+]
+objs = [env.Object("%s.obj" % f, louisSourceDir.File(f)) for f in sourceFiles]
+louisLib = env.SharedLibrary("liblouis", objs)
+if signExec:
+	env.AddPostAction(louisLib[0],[signExec])
+env.Install(sourceDir, louisLib)
+
+louisPython = env.Substfile(outDir.File("__init__.py"), louisRootDir.File("python/louis/__init__.py.in"),
+	SUBST_DICT={"###LIBLOUIS_SONAME###": louisLib[0].name})
+
+env.Install(outDir.Dir("tables"),
+	[f for f in env.Glob("%s/tables/*" % louisRootDir)
+		if f.name not in ("Makefile", "Makefile.am", "Makefile.in", "README", "maketablelist.sh")
+	])

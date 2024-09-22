@@ -1,0 +1,27 @@
+<!doctype html>
+<HTML style="width : 350; height: 300">
+<HEAD>
+<TITLE></TITLE>
+<SCRIPT LANGUAGE=javascript>
+<!--
+function escapeKeyPress(e) {
+	e = e || window.event;
+	if(e.keyCode == 27){ // code for escape
+		window.close();
+	}
+};
+
+function windowOnLoad() {
+	var args = window.dialogArguments;
+	if (args) {
+		document.title = args.item('title');
+		messageID.innerHTML = args.item('message');
+	}
+} 
+//-->
+</SCRIPT>
+</HEAD>
+<BODY tabindex='0' id='main_body' style="margin:1em" LANGUAGE=javascript onload="return windowOnLoad()" onkeypress="return escapeKeyPress()" >
+<div id=messageID></div>
+</body>
+</html>
