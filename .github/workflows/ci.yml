@@ -34,9 +34,10 @@ jobs:
 
       - name: Run SCons build
         run: |
-          .\scons.bat  source
-          .\scons.bat  dist
-          .\scons.bat  launcher
+        .\scons.bat
+          scons  source
+          scons  dist
+          scons  launcher
 
       - name: Output build artifacts
         run: |
