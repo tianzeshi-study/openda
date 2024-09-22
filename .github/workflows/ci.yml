@@ -20,9 +20,15 @@ jobs:
         uses: microsoft/setup-msbuild@v1
         with:
           vs-version: 'latest'  # 或指定特定版本，例如 '16.0'
-          components: |
-            desktop-development
-            universal-application-platform-development
+          # components: |
+            # desktop-development
+            # universal-application-platform-development
+
+      - name: Install Visual Studio components
+        run: |
+          # 安装 Visual Studio 2019
+          $vsInstaller = "C:\ProgramData\Microsoft\VisualStudio\Installer\vs_installer.exe"
+          & $vsInstaller --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.Universal --includeRecommended --quiet --wait
 
       - name: Set up Python
         uses: actions/setup-python@v2
