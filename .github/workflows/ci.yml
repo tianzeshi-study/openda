@@ -27,8 +27,9 @@ jobs:
       - name: Install Visual Studio components
         run: |
           # $vsInstaller = "C:\ProgramData\Microsoft\VisualStudio\Installer\vs_installer.exe"
-          # & $vsInstaller --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.Universal --includeRecommended --quiet --wait
-          vs_installer.exe  --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.Universal --includeRecommended --quiet --wait
+          $vsInstaller = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
+          & $vsInstaller --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.Universal --includeRecommended --quiet --wait
+          # vs_installer.exe  --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.Universal --includeRecommended --quiet --wait
 
       - name: Set up Python
         uses: actions/setup-python@v2
