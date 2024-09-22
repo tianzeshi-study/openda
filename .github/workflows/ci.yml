@@ -28,14 +28,15 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          .\venvUtils\ensureAndActivate.bat
+          # pip install -r requirements.txt
           pip install scons
 
       - name: Run SCons build
         run: |
-          scons source
-          scons dist
-          scons launcher
+          scons.bat  source
+          scons.bat  dist
+          scons.bat  launcher
 
       - name: Output build artifacts
         run: |
