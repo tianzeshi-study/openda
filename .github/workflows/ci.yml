@@ -34,7 +34,7 @@ jobs:
 
       - name: Run SCons build
         run: |
-        .\scons.bat
+          .\scons.bat
           scons  source
           scons  dist
           scons  launcher
