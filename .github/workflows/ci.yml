@@ -28,7 +28,7 @@ jobs:
         run: |
           # $vsInstaller = "C:\ProgramData\Microsoft\VisualStudio\Installer\vs_installer.exe"
           $vsInstaller = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
-          & $vsInstaller --add "Microsoft.VisualStudio.Workload.NativeDesktop" --add "Microsoft.VisualStudio.Component.Windows11SDK.22621" --add "Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset" --add "Microsoft.VisualStudio.Component.VC.Llvm.Clang" --add "Microsoft.VisualStudio.Component.VC.Tools.x86.x64" --add "Microsoft.VisualStudio.Component.VC.Tools.ARM64EC" --add "Microsoft.VisualStudio.Component.VC.Tools.ARM64" --add "Microsoft.VisualStudio.Component.VC.ATL" --add "Microsoft.VisualStudio.Component.VC.ATL.ARM64" --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.Universal  --includeRecommended --quiet --wait
+          & $vsInstaller --add "Microsoft.VisualStudio.Workload.NativeDesktop" --add "Microsoft.VisualStudio.Component.Windows11SDK.22621" --add "Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset" --add "Microsoft.VisualStudio.Component.VC.Llvm.Clang" --add "Microsoft.VisualStudio.Component.VC.Tools.x86.x64" --add "Microsoft.VisualStudio.Component.VC.Tools.ARM64EC" --add "Microsoft.VisualStudio.Component.VC.Tools.ARM64" --add "Microsoft.VisualStudio.Component.VC.ATL" --add "Microsoft.VisualStudio.Component.VC.ATL.ARM64" --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.Universal --add Microsoft.VisualStudio.Component.VC.Runtimes --includeRecommended --quiet --wait
           # vs_installer.exe  --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.Universal --includeRecommended --quiet --wait
 
       - name: Set up Python
@@ -50,9 +50,9 @@ jobs:
       - name: Run SCons build
         run: |
           .\scons.bat
-          scons  source
-          scons  dist
-          scons  launcher
+          .\scons.bat   source
+          .\scons.bat  dist
+          .\scons\bat   launcher
 
       - name: Output build artifacts
         run: |
