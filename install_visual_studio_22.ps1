@@ -16,13 +16,13 @@ C:\src\vs_professional.exe --wait --installPath `
     --add Microsoft.VisualStudio.Component.VC.Llvm.Clang `
     --add Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset `
     --add Microsoft.VisualStudio.Component.Windows10SDK.18362 `
-    --add Microsoft.VisualStudio.Workload.NativeDesktop
-    --add Microsoft.VisualStudio.Workload.NativeDesktop
-    --add Microsoft.VisualStudio.Component.Windows11SDK.22621
-    --add Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset
-    --add Microsoft.VisualStudio.Component.VC.Llvm.Clang
-    --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64
-    --add Microsoft.VisualStudio.Component.VC.Tools.ARM64EC
-    --add Microsoft.VisualStudio.Component.VC.Tools.ARM64
-    --add Microsoft.VisualStudio.Component.VC.ATL
-    --add Microsoft.VisualStudio.Component.VC.ATL.ARM64
+    --add Microsoft.VisualStudio.Workload.NativeDesktop `
+    --add Microsoft.VisualStudio.Workload.NativeDesktop `
+    --add Microsoft.VisualStudio.Component.Windows11SDK.22621 `
+    --add Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset `
+    --add Microsoft.VisualStudio.Component.VC.Llvm.Clang `
+    --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
+    --add Microsoft.VisualStudio.Component.VC.Tools.ARM64EC `
+    --add Microsoft.VisualStudio.Component.VC.Tools.ARM64 `
+    --add Microsoft.VisualStudio.Component.VC.ATL `
+    --add Microsoft.VisualStudio.Component.VC.ATL.ARM64 `
