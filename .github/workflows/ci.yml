@@ -16,10 +16,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install Visual Studio
-        uses: microsoft/setup-msbuild@v1
-        with:
-          vs-version: 'latest'  # 或指定特定版本，例如 '16.0'
+      # - name: Install Visual Studio
+        # uses: microsoft/setup-msbuild@v1
+        # with:
+          # vs-version: 'latest'  # 或指定特定版本，例如 '16.0'
           # components: |
             # desktop-development
             # universal-application-platform-development
@@ -57,12 +57,12 @@ jobs:
             exit 1
           }
 
-      - name: List Visual Studio Components
-        run: |
-          & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -products * -property installationPath | ForEach-Object {
-            & "$_\Common7\IDE\devenv.exe" /log
-            Get-Content "$_\Common7\IDE\ActivityLog.xml" | Select-String "Component"
-          }
+      # - name: List Visual Studio Components
+        # run: |
+          # & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -products * -property installationPath | ForEach-Object {
+            # & "$_\Common7\IDE\devenv.exe" /log
+            # Get-Content "$_\Common7\IDE\ActivityLog.xml" | Select-String "Component"
+          # }
       - name: Run SCons build
         run: |
           $vsInstaller = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
