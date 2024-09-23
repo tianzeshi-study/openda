@@ -47,6 +47,22 @@ jobs:
           # pip install -r requirements.txt
           pip install scons
 
+      - name: Check Visual Studio Installation
+        run: |
+          # 使用 vswhere 检查 Visual Studio 版本
+          if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") {
+            & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -products * -requires Microsoft.Component.MSBuild -property installationPath
+          } else {
+            Write-Host "Visual Studio is not installed."
+            exit 1
+          }
+
+      - name: List Visual Studio Components
+        run: |
+          & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -products * -property installationPath | ForEach-Object {
+            & "$_\Common7\IDE\devenv.exe" /log
+            Get-Content "$_\Common7\IDE\ActivityLog.xml" | Select-String "Component"
+          }
       - name: Run SCons build
         run: |
           $vsInstaller = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
