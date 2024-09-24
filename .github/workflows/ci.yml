@@ -89,6 +89,7 @@ jobs:
         # run: dotnet workload install microsoft-windows-desktop --force # 安装 Windows 桌面开发组件
 
       - name: Configure build for msvc
+        shell: cmd 
         uses: ilammy/msvc-dev-cmd@v1
         with:
           uwp : true
