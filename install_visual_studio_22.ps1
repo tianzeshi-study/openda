@@ -25,4 +25,5 @@ C:\src\vs_professional.exe --wait --installPath `
     --add Microsoft.VisualStudio.Component.VC.Tools.ARM64EC `
     --add Microsoft.VisualStudio.Component.VC.Tools.ARM64 `
     --add Microsoft.VisualStudio.Component.VC.ATL `
-    --add Microsoft.VisualStudio.Component.VC.ATL.ARM64 
+    --add Microsoft.VisualStudio.Component.VC.ATL.ARM64 `
+ --add Microsoft.VisualStudio.Workload.Universal    
