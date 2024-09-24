@@ -83,8 +83,8 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 6.0.x # 指定需要的 .NET SDK 版本
-      - name: Install Visual Studio components
-        run: dotnet workload install microsoft-windows-desktop --force # 安装 Windows 桌面开发组件
+      # - name: Install Visual Studio components
+        # run: dotnet workload install microsoft-windows-desktop --force # 安装 Windows 桌面开发组件
 
       - name: Configure build for amd64
         uses: ilammy/msvc-dev-cmd@v1
