@@ -37,7 +37,7 @@ jobs:
           '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -products * -requires Microsoft.VisualStudio.Workload.Universal -format json'
           vswhere
           & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" --add "Microsoft.VisualStudio.Workload.NativeDesktop"
-          msbuild
+          # msbuild
           
       - name: Set up Python
         uses: actions/setup-python@v2
