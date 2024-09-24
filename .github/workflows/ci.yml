@@ -40,10 +40,10 @@ jobs:
           # & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" --add "Microsoft.VisualStudio.Workload.NativeDesktop"
           # msbuild
           
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.11.x'  # 指定 3.11 的次版本
+      # - name: Set up Python
+        # uses: actions/setup-python@v2
+        # with:
+          # python-version: '3.11.x'  # 指定 3.11 的次版本
 
       - name: Install Visual Studio components
         run: |
@@ -83,6 +83,7 @@ jobs:
           $vsInstaller = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
           & $vsInstaller --add "Microsoft.VisualStudio.Workload.NativeDesktop" --add "Microsoft.VisualStudio.Component.Windows11SDK.22621" --add "Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset" --add "Microsoft.VisualStudio.Component.VC.Llvm.Clang" --add "Microsoft.VisualStudio.Component.VC.Tools.x86.x64" --add "Microsoft.VisualStudio.Component.VC.Tools.ARM64EC" --add "Microsoft.VisualStudio.Component.VC.Tools.ARM64" --add "Microsoft.VisualStudio.Component.VC.ATL" --add "Microsoft.VisualStudio.Component.VC.ATL.ARM64" --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.Universal --add Microsoft.VisualStudio.Component.VC.Runtimes --includeRecommended 
           # & $vsInstaller --add "Microsoft.VisualStudio.Workload.NativeDesktop" --add "Microsoft.VisualStudio.Component.Windows11SDK.22621" --add "Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset" --add "Microsoft.VisualStudio.Component.VC.Llvm.Clang" --add "Microsoft.VisualStudio.Component.VC.Tools.x86.x64" --add "Microsoft.VisualStudio.Component.VC.Tools.ARM64EC" --add "Microsoft.VisualStudio.Component.VC.Tools.ARM64" --add "Microsoft.VisualStudio.Component.VC.ATL" --add "Microsoft.VisualStudio.Component.VC.ATL.ARM64" --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.Universal --add Microsoft.VisualStudio.Component.VC.Runtimes --includeRecommended --quiet --wait
+          choco install python3.11.x
           .\scons.bat  -j 2
           .\scons.bat   source
           .\scons.bat  dist
