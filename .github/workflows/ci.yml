@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Install Visual Studio
+      - name: Install Visual Studio
         uses: microsoft/setup-msbuild@v1
         with:
           vs-version: 'latest'  # 或指定特定版本，例如 '16.0'
