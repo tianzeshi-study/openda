@@ -73,6 +73,8 @@ jobs:
             # & "$_\Common7\IDE\devenv.exe" /log
             # Get-Content "$_\Common7\IDE\ActivityLog.xml" | Select-String "Component"
           # }
+      - name : install .vsconfig Component
+        run: & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" install --passive  --productId Microsoft.VisualStudio.Product.Enterprise --config .\vsconfig   
       - name: Run SCons build
         run: |
           $vsInstaller = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
