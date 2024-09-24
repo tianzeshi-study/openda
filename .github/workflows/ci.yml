@@ -86,9 +86,11 @@ jobs:
       # - name: Install Visual Studio components
         # run: dotnet workload install microsoft-windows-desktop --force # 安装 Windows 桌面开发组件
 
-      - name: Configure build for amd64
+      - name: Configure build for msvc
         uses: ilammy/msvc-dev-cmd@v1
-        # with:
+        with:
+          uwp : true
+          spectre : true 
           # arch: amd64
       - name: Run SCons build
         run: |
