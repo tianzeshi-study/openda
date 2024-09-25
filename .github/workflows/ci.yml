@@ -96,6 +96,7 @@ jobs:
           spectre : true 
           # toolset: 14.30.30704
           toolset: 14.41.34120
+          arch: x86
           # toolset: 14.11
           # arch: amd64
       - name: Run SCons build
