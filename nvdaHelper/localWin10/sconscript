@@ -49,7 +49,7 @@ localWin10Lib = env.SharedLibrary(
 # msvc =14.41.34120
 msvc = "14.40.33807"
 print("msvc:", msvc)
-vc_dir = find_vc_pdir(env, msvc)
+# vc_dir = find_vc_pdir(env, msvc)
 print("vc_dir:",vc_dir)
 # vcRedistDirs = glob.glob(os.path.join(
     # find_vc_pdir(env, msvc),
