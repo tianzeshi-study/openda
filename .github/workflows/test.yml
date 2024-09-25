@@ -34,6 +34,7 @@ jobs:
           # arch: amd64
       - name: Run system test 
         run: |
+          .\SCons.bat source
           .\runsystemtests.bat
 
   unitTests:
@@ -60,6 +61,7 @@ jobs:
           # arch: amd64
       - name: Run unit tests 
         run: |
+          .\SCons.bat
           .\rununittests.bat
 
   settingsDiff:
