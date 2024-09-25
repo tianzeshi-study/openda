@@ -116,7 +116,7 @@ jobs:
           .\scons.bat  -j 2
           scons   source
           scons  dist
-          .\scons\bat   launcher
+          # .\scons\bat   launcher
 
       - name: Output build artifacts
         run: |
