@@ -50,6 +50,7 @@ localWin10Lib = env.SharedLibrary(
 msvc = "14.40.33807"
 print("msvc:", msvc)
 # vc_dir = find_vc_pdir(env, msvc)
+vc_dir = 'C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/'
 print("vc_dir:",vc_dir)
 # vcRedistDirs = glob.glob(os.path.join(
     # find_vc_pdir(env, msvc),
