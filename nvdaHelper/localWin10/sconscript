@@ -47,7 +47,7 @@ localWin10Lib = env.SharedLibrary(
 # Therefore  Search these versioned directories from newest to oldest  to collect all the files we need.
 # msvc = env.get('MSVC_VERSION')
 # msvc =14.41.34120
-msvc = 14.40.33807
+msvc = "14.40.33807"
 print("msvc:", msvc)
 vc_dir = find_vc_pdir(env, msvc)
 print("vc_dir:",vc_dir)
