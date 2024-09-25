@@ -1,2 +1,2 @@
 call .\venvUtils\ensureAndActivate.bat
-python  -m scons -j 2 dist 
+python  -m SCons -j 2 dist 
