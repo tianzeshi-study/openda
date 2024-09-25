@@ -189,10 +189,8 @@ jobs:
       - name: Run SCons build
         run: |
           $env:MSVC_VERSION = "19.41.34120"
-          .\venvUtils\ensureAndActivate.bat
-          py  -m scons  -j 2 dist
-          ls -n
-          pwd          
+          .\buildDist.bat
+
 
       - name: Upload output
         uses: actions/upload-artifact@v4

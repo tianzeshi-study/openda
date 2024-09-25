@@ -6,7 +6,7 @@ on:
       - main
       - master
       - ci
-      -test 
+      - test 
   pull_request:
 
 jobs:
