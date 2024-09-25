@@ -54,7 +54,7 @@ print("vc_dir:",vc_dir)
     # rf"Redist\MSVC\{msvc}*\x86\Microsoft.VC{msvc.replace('.', '')}.CRT"
 # ))
 vcRedistDirs = glob.glob(os.path.join(
-    vc_pdir,
+    vc_dir,
     rf"Redist\MSVC\{msvc}*\x86\Microsoft.VC{msvc.replace('.', '')}.CRT"
 ))
 
