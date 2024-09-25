@@ -93,11 +93,18 @@ jobs:
           cl 
           echo "Using MSVC version: $env:MSVC_VERSION"
           .\scons.bat  -j 2 dist
-          ls
+          ls -n
           pwd          
           # scons   source
           # scons  dist
           # .\scons\bat   launcher
+
+      - name: Upload output
+        uses: actions/upload-artifact@v4
+        with:
+          name: nvda
+          path: output
+
 
       - name: Output build artifacts
         run: |
