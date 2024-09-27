@@ -14,7 +14,7 @@ from typing import Set
 A script to ensure that the NVDA build system's Python virtual environment is created and up to date.
 """
 
-top_dir: str = os.path.join(os.path.abspath(os.path.dirname(__file__)), "..")
+top_dir: str = os.path.join(os.path.abspath(os.path.dirname(__file__)), ".")
 venv_path: str = os.path.join(top_dir, ".venv")
 requirements_path: str = os.path.join(top_dir, "requirements.txt")
 venv_orig_requirements_path: str = os.path.join(venv_path, "_requirements.txt")
