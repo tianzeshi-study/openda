@@ -190,10 +190,10 @@ jobs:
         run: |
           $env:MSVC_VERSION = "19.41.34120"
           # .\buildDist.bat
-          python -m venv .venv
+          py -3.11-32 -m venv .venv
           .\.venv\Scripts\activate.bat
           pip install -r .\requirements.txt
-          python -m scons dist
+          py -3.11-32 -m scons dist
 
 
       - name: Upload output
