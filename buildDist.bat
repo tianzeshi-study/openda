@@ -1,2 +1,2 @@
 call .\venvUtils\ensureAndActivate.bat
-SCons -j 2 dist 
+REM SCons -j 2 dist 
