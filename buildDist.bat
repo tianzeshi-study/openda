@@ -29,4 +29,4 @@ set NVDA_VENV=%VIRTUAL_ENV%
 rem mention the environment in the prompt to make it obbvious it is active
 rem just in case this script is executed outside of a local block and not cleaned up.
 set PROMPT=[NVDA Venv] %PROMPT%
-SCons dist
+REM SCons dist

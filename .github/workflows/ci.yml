@@ -189,7 +189,11 @@ jobs:
       - name: Run SCons build
         run: |
           $env:MSVC_VERSION = "19.41.34120"
-          .\buildDist.bat
+          # .\buildDist.bat
+          python -m venv .venv
+          .\.venv\Scripts\activate.bat
+          pip install -r .\requirements.txt
+          python -m scons dist
 
 
       - name: Upload output
