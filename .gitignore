@@ -11,7 +11,7 @@ build_debug
 dist
 *.dll
 *.exe
-*.manifest
+# *.manifest
 source/synthDrivers/espeak-ng-data
 source/lib
 source/lib64
