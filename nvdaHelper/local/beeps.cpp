@@ -11,6 +11,9 @@ Copyright 2006-2015 NVDA contributers.
 This license can be found at:
 http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 */
+#define NOMINMAX
+#include <windows.h>
+#include <algorithm>  // for std::min and std::max
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include "beeps.h"
