@@ -195,7 +195,7 @@ jobs:
           py -3.11-32 -m venv .venv
           .\.venv\Scripts\activate.bat
           pip install -r .\requirements.txt
-          scons dist
+          .\scons.bat dist
           # py -3.11-32 -m scons dist
 
 
