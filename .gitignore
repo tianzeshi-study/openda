@@ -1,5 +1,5 @@
 *.mo
-!source/locale/*/LC_MESSAGES/nvda.mo
+# !source/locale/*/LC_MESSAGES/nvda.mo
 source/comInterfaces/*.py
 !source/comInterfaces/__init__.py
 # These are manually generated and updated, so don't delete them
