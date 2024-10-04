@@ -1,4 +1,5 @@
 *.mo
+!source/locale/*/LC_MESSAGES/nvda.mo
 source/comInterfaces/*.py
 !source/comInterfaces/__init__.py
 # These are manually generated and updated, so don't delete them
@@ -10,6 +11,7 @@ build
 build_debug
 dist
 *.dll
+!include/javaAccessBridge32/windowsaccessbridge-32.dll
 *.exe
 # *.manifest
 source/synthDrivers/espeak-ng-data
