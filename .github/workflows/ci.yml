@@ -97,6 +97,7 @@ jobs:
           .\scons.BAT source
           .\scons.bat  -j 2 dist
           ls -n source\lib
+          ls -n build\x86\microsoft-ui-uiautomation
           pwd          
           # scons   source
           # scons  dist

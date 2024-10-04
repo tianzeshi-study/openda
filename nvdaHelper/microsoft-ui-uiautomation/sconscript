@@ -40,7 +40,7 @@ env = env.Clone()
 # Building with msbuild requires windir to be set as environment variable,
 # otherwise the build fails with Visual Studio 2022
 env['ENV']['windir'] = os.environ['windir']
-
+print("startting Microsoft.UI.UIAutomation.dll SCons build, this is Microsoft.UI.UIAutomation.dll  sconscript") 
 
 # We must ensure that msbuild uses the same platform toolset as the rest of NVDA.
 # Thus we must fetch this info from the MSVC_VERSION SCons variable,
@@ -85,6 +85,7 @@ MSUIA_wrapper_libs = env.Command(
 env.Ignore(MSUIA_wrapper_libs,MSUIA_sourceDir.File('microsoft.ui.uiautomation/Microsoft.UI.UIAutomation_h.h'))
 
 env.Install(sourceLibDir,MSUIA_wrapper_libs[0])
+print("install  Microsoft.UI.UIAutomation.dll.manifest")
 env.Install(sourceLibDir, "Microsoft.UI.UIAutomation.dll.manifest")
 
 MSUIA_abstraction_libs = env.Command(
