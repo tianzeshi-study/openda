@@ -84,6 +84,14 @@ jobs:
           arch: x86
           # toolset: 14.11
           # arch: amd64
+      - name: Cache SCons build directory
+        uses: actions/cache@v3
+        with:
+          path: build/
+          key: ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}
+          restore-keys: |
+            ${{ runner.os }}-scons-build-
+
       - name: Run SCons build
         # continue-on-error: true
         run: |
@@ -191,6 +199,13 @@ jobs:
           arch: x86
           # toolset: 14.11
           # arch: amd64
+      - name: Cache SCons build directory
+        uses: actions/cache@v3
+        with:
+          path: build/
+          key: ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}
+          restore-keys: |
+            ${{ runner.os }}-scons-build-
       - name: Run SCons build
         # continue-on-error: true
         run: |
