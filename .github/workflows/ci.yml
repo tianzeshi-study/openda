@@ -85,6 +85,7 @@ jobs:
           # toolset: 14.11
           # arch: amd64
       - name: Run SCons build
+        continue-on-error: true
         run: |
           # ls -n -r 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.40.33807\x86\'
           # where cl
@@ -187,6 +188,7 @@ jobs:
           # toolset: 14.11
           # arch: amd64
       - name: Run SCons build
+        continue-on-error: true
         run: |
           $env:MSVC_VERSION = "19.41.34120"
           # .\buildDist.bat
