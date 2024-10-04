@@ -93,9 +93,10 @@ jobs:
           & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x86
           cl 
           echo "Using MSVC version: $env:MSVC_VERSION"
+          .\scons.BAT
           .\scons.BAT source
           .\scons.bat  -j 2 dist
-          ls -n
+          ls -n source\lib
           pwd          
           # scons   source
           # scons  dist
