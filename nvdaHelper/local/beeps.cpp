@@ -33,6 +33,12 @@ int generateBeep(short* buf, const float hz, const int length, const int left, c
 		return totalSamples*4;
 	}
 	const double lpan=(left/100.0)*amplitude, rpan=(right/100.0)*amplitude;
+    
+    
+    #ifndef M_PI
+    #define M_PI 3.14159265358979323846  // 手动定义 M_PI
+    #endif
+
 	const double sinFreq=(2.0*M_PI)/(sampleRate/hz); //DON'T use samplesPerCycle here
 	for (int sampleNum=0; sampleNum<totalSamples; ++sampleNum) {
 		const double sample=min(max(sin((sampleNum%sampleRate)*sinFreq)*2.0,-1.0),1.0);
