@@ -60,6 +60,26 @@ jobs:
           arch: x86
           # toolset: 14.11
           # arch: amd64
+      - name: Cache SCons build directory
+        uses: actions/cache@v3
+        with:
+          path: |
+            build/
+            source/
+          key: ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}
+          restore-keys: |
+            ${{ runner.os }}-scons-build-
+
+
+      - name: Cache python dependency directory
+        uses: actions/cache@v3
+        with:
+          path: .venv/
+          key: ${{ runner.os }}-python-venv-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-python-venv-
+
+
       - name: Run unit tests 
         run: |
           .\SCons.bat tests
