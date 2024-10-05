@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Visual Studio
-        uses: microsoft/setup-msbuild@v1
+        uses: microsoft/setup-msbuild@v2
         with:
           vs-version: '17.0'  
           # vs-version: 'latest'  # 或指定特定版本，例如 '16.0'
@@ -52,7 +52,7 @@ jobs:
           }
 
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 6.0.x # 指定需要的 .NET SDK 版本
       - name: Configure build for msvc
@@ -105,7 +105,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Visual Studio
-        uses: microsoft/setup-msbuild@v1
+        uses: microsoft/setup-msbuild@v2
         with:
           vs-version: 'latest'  # 或指定特定版本，例如 '16.0'
           # components: |
@@ -153,7 +153,7 @@ jobs:
           }
 
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 6.0.x # 指定需要的 .NET SDK 版本
       - name: Configure build for msvc

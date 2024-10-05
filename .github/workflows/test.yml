@@ -123,7 +123,7 @@ jobs:
       - name: run unit test
         run: |
           .\rununittests.bat
-          ls -n source\louis\tables
+          # ls -n source\louis\tables
 
 
   settingsDiff:
@@ -148,7 +148,32 @@ jobs:
           arch: x86
           # toolset: 14.11
           # arch: amd64
-      - name: Run settings diff 
+      - name: Cache SCons build directory
+        uses: actions/cache@v4
+        with:
+          path: |
+            build/
+            # source/lib/
+          key: ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}
+          restore-keys: |
+            ${{ runner.os }}-scons-build-
+
+
+      - name: Cache python dependency directory
+        uses: actions/cache@v4
+        with:
+          path: .venv/
+          key: ${{ runner.os }}-python-venv-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-python-venv-
+
+
+ 
+      - name: Run settings diff  prepare
         run: |
-          .\SCons.bat tests
+          .\SCons.bat -j4 tests
+          .\SCons.bat -j4 source
+          .\SCons.bat -j4 dist
+      - name: run system diff
+        run: |
           .\runsettingsdiff.bat
