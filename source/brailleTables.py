@@ -126,7 +126,7 @@ addTable("bel-comp.utb", _("Belarusian computer braille"))
 addTable("bel.utb", _("Belarusian literary braille"))
 # Translators: The name of a braille table displayed in the
 # braille settings dialog.
-addTable("bel-detailed.utb", _("Belarusian literary braille (detailed)"))
+# addTable("bel-detailed.utb", _("Belarusian literary braille (detailed)"))
 # Translators: The name of a braille table displayed in the
 # braille settings dialog.
 addTable("bg.ctb", _("Bulgarian 8 dot computer braille"))
