@@ -11,8 +11,6 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    # env:
-      # MSVC_VERSION: '14.29.30133'  
 
     steps:
       - name: Checkout code
@@ -71,7 +69,9 @@ jobs:
       - name: Cache SCons build directory
         uses: actions/cache@v3
         with:
-          path: build/
+          path: |
+            build/
+            source/
           key: ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}
           restore-keys: |
             ${{ runner.os }}-scons-build-
@@ -79,15 +79,11 @@ jobs:
       - name: Run SCons build
         # continue-on-error: true
         run: |
-          # ls -n -r 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.40.33807\x86\'
-          # where cl
-          $env:MSVC_VERSION = "19.41.34120"
-          & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x86
           cl 
           echo "Using MSVC version: $env:MSVC_VERSION"
           # .\scons.BAT
-          .\scons.BAT -j2 source
-          .\scons.bat  -j 2 dist
+          .\scons.BAT -j4 source
+          .\scons.bat  -j4 dist
           .\scons\bat   launcher
           ls -n output
 
@@ -98,10 +94,6 @@ jobs:
           path: output
 
 
-      - name: Output build artifacts
-        run: |
-          echo "Artifacts generated:"
-          dir  # 列出生成的产物
 
   output:
     runs-on: windows-latest
