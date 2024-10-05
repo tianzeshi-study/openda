@@ -56,6 +56,7 @@ jobs:
       - name: Run system test  prepare 
         run: |
           .\SCons.bat -j4 source
+          .\SCons.bat  -j4 dist 
           .\SCons.bat  -j4 tests
 
       - name: Run system test NVDA
