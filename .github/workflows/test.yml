@@ -20,7 +20,7 @@ jobs:
       - name: Install Visual Studio
         uses: microsoft/setup-msbuild@v1
         with:
-          vs-version: 'latest'  # 或指定特定版本，例如 '16.0'
+          vs-version: '17.0'  # 或指定特定版本，例如 '16.0'
 
       - name: Configure build for msvc
         uses: ilammy/msvc-dev-cmd@v1
@@ -32,11 +32,39 @@ jobs:
           arch: x86
           # toolset: 14.11
           # arch: amd64
-      - name: Run system test 
+      - name: Cache SCons build directory
+        uses: actions/cache@v3
+        with:
+          path: |
+            build/
+            # source/lib/
+          key: ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}
+          restore-keys: |
+            ${{ runner.os }}-scons-build-
+
+
+      - name: Cache python dependency directory
+        uses: actions/cache@v3
+        with:
+          path: .venv/
+          key: ${{ runner.os }}-python-venv-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-python-venv-
+
+
+ 
+      - name: Run system test  prepare 
         run: |
-          .\SCons.bat source
-          .\SCons.bat tests
-          .\runsystemtests.bat
+          .\SCons.bat -j4 source
+          .\SCons.bat  -j4 tests
+
+      - name: Run system test NVDA
+        run: |
+          .\runsystemtests.bat --include NVDA
+
+      - name: Run system test chrome 
+        run: |
+          .\runsystemtests.bat --include chrome
 
   unitTests:
     runs-on: windows-latest
@@ -80,11 +108,15 @@ jobs:
             ${{ runner.os }}-python-venv-
 
 
-      - name: Run unit tests 
+      - name: Run unit tests  prepare 
         run: |
           .\SCons.bat -j4 tests
           .\SCons.bat -j4 source
+      - name: run unit test
+        run |
           .\rununittests.bat
+          ls -n source\louis\tables
+
 
   settingsDiff:
     runs-on: windows-latest

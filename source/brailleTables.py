@@ -569,7 +569,7 @@ addTable("tsn-za-g2.ctb", _("Setswana grade 2"), contracted=True)
 addTable("uk.utb", _("Ukrainian grade 1"))
 # Translators: The name of a braille table displayed in the
 # braille settings dialog.
-addTable("uk-detailed.utb", _("Ukrainian literary braille (detailed)"))
+# addTable("uk-detailed.utb", _("Ukrainian literary braille (detailed)"))
 # Translators: The name of a braille table displayed in the
 # braille settings dialog.
 addTable("uk-comp.utb", _("Ukrainian computer braille"))
