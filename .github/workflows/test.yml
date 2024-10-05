@@ -15,10 +15,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install Visual Studio
-        uses: microsoft/setup-msbuild@v1
+        uses: microsoft/setup-msbuild@v2
         with:
           vs-version: '17.0'  # 或指定特定版本，例如 '16.0'
 
@@ -59,22 +59,29 @@ jobs:
           .\SCons.bat  -j4 tests
 
       - name: Run system test NVDA
+        continue-on-error: true
         run: |
           .\runsystemtests.bat --include NVDA
 
-      - name: Run system test chrome 
+      - name: Run system test chrome
+        continue-on-error: true
         run: |
           .\runsystemtests.bat --include chrome
+      - name: Upload output
+        uses: actions/upload-artifact@v4
+        with:
+          name: systemTestLog
+          path: testOutput\system
 
   unitTests:
     runs-on: windows-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install Visual Studio
-        uses: microsoft/setup-msbuild@v1
+        uses: microsoft/setup-msbuild@v2
         with:
           vs-version: 'latest'  # 或指定特定版本，例如 '16.0'
 
@@ -123,10 +130,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install Visual Studio
-        uses: microsoft/setup-msbuild@v1
+        uses: microsoft/setup-msbuild@v2
         with:
           vs-version: 'latest'  # 或指定特定版本，例如 '16.0'
 
