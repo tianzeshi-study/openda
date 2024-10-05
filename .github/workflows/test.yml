@@ -113,7 +113,7 @@ jobs:
           .\SCons.bat -j4 tests
           .\SCons.bat -j4 source
       - name: run unit test
-        run |
+        run: |
           .\rununittests.bat
           ls -n source\louis\tables
 
