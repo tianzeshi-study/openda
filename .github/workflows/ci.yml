@@ -71,7 +71,7 @@ jobs:
         with:
           path: |
             build/
-            source/
+            # source/
           key: ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}
           restore-keys: |
             ${{ runner.os }}-scons-build-
