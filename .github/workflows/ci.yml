@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install Visual Studio
         uses: microsoft/setup-msbuild@v1
@@ -84,7 +84,7 @@ jobs:
           # .\scons.BAT
           .\scons.BAT -j4 source
           .\scons.bat  -j4 dist
-          .\scons.bat   launcher
+          .\scons.bat  -j4  launcher
           ls -n output
 
       - name: Upload output
@@ -102,7 +102,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install Visual Studio
         uses: microsoft/setup-msbuild@v1
@@ -181,14 +181,14 @@ jobs:
           py -3.11-32 -m venv .venv
           .\.venv\Scripts\activate.bat
           pip install -r .\requirements.txt
-          .\scons.BAT source
-          .\scons.bat dist
-          .\scons.bat launcher version=test1                                                                  
+          .\scons.BAT -j4  source
+          .\scons.bat -j4  dist
+          .\scons.bat -j4 launcher version=test1                                                                  
           # py -3.11-32 -m scons dist
 
 
       - name: Upload output
         uses: actions/upload-artifact@v4
         with:
-          name: nvda
+          name: nvda-output
           path: output
