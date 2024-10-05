@@ -84,7 +84,7 @@ jobs:
           # .\scons.BAT
           .\scons.BAT -j4 source
           .\scons.bat  -j4 dist
-          .\scons\bat   launcher
+          .\scons.bat   launcher
           ls -n output
 
       - name: Upload output
