@@ -87,11 +87,11 @@ jobs:
           .\scons.bat  -j4  launcher
           ls -n output
 
-      - name: Upload output
-        uses: actions/upload-artifact@v4
-        with:
-          name: nvda
-          path: output
+      # - name: Upload output
+        # uses: actions/upload-artifact@v4
+        # with:
+          # name: nvda
+          # path: output
 
 
 
@@ -187,8 +187,8 @@ jobs:
           # py -3.11-32 -m scons dist
 
 
-      - name: Upload output
-        uses: actions/upload-artifact@v4
-        with:
-          name: nvda-output
-          path: output
+      # - name: Upload output
+        # uses: actions/upload-artifact@v4
+        # with:
+          # name: nvda-output
+          # path: output
