@@ -61,7 +61,7 @@ jobs:
           .\SCons.bat  -j4 tests
 
       - name: Run system test NVDA
-        continue-on-error: true
+        # continue-on-error: true
         run: |
           .\runsystemtests.bat --include NVDA --exclude excluded_from_build
 
@@ -174,4 +174,5 @@ jobs:
           .\SCons.bat -j4 dist
       - name: run system diff
         run: |
-          .\runsettingsdiff.bat
+          .\runsettingsdiff.bat -v whichNVDA:source -v currentVersion:source -v compareVersion:2020.4
+          # .\runsettingsdiff.bat
