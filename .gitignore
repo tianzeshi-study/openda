@@ -12,7 +12,10 @@ build_debug
 dist
 *.dll
 !include/javaAccessBridge32/windowsaccessbridge-32.dll
+!include/nsis/*/*/*.dll
 *.exe
+!include/nsis/*/*/*.exe
+!include/nsis/*/**
 # *.manifest
 source/synthDrivers/espeak-ng-data
 source/lib

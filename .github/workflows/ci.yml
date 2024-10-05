@@ -21,43 +21,27 @@ jobs:
       - name: Install Visual Studio
         uses: microsoft/setup-msbuild@v1
         with:
-          vs-version: 'latest'  # 或指定特定版本，例如 '16.0'
-          # components: |
-            # desktop-development
-            # universal-application-platform-development
+          vs-version: '17.0'  
+          # vs-version: 'latest'  # 或指定特定版本，例如 '16.0'
 
-      - name: Install Visual Studio components
-        run: |
-          # $vsInstaller = "C:\ProgramData\Microsoft\VisualStudio\Installer\vs_installer.exe"
-          $vsInstaller = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe"
-          # & $vsInstaller install   --add "Microsoft.VisualStudio.Workload.NativeDesktop" --add "Microsoft.VisualStudio.Component.Windows11SDK.22621" --add "Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset" --add "Microsoft.VisualStudio.Component.VC.Llvm.Clang" --add "Microsoft.VisualStudio.Component.VC.Tools.x86.x64" --add "Microsoft.VisualStudio.Component.VC.Tools.ARM64EC" --add "Microsoft.VisualStudio.Component.VC.Tools.ARM64" --add "Microsoft.VisualStudio.Component.VC.ATL" --add "Microsoft.VisualStudio.Component.VC.ATL.ARM64" --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.Universal --add Microsoft.VisualStudio.Component.VC.Runtimes --add Microsoft.VisualStudio.Workload.Universal --includeRecommended --quiet --wait
-          & $vsInstaller install   --add "Microsoft.VisualStudio.Workload.NativeDesktop" --add "Microsoft.VisualStudio.Component.Windows11SDK.22621" --add "Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset" --add "Microsoft.VisualStudio.Component.VC.Llvm.Clang" --add "Microsoft.VisualStudio.Component.VC.Tools.x86.x64" --add "Microsoft.VisualStudio.Component.VC.Tools.ARM64EC" --add "Microsoft.VisualStudio.Component.VC.Tools.ARM64" --add "Microsoft.VisualStudio.Component.VC.ATL" --add "Microsoft.VisualStudio.Component.VC.ATL.ARM64" --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.Universal --add Microsoft.VisualStudio.Component.VC.Runtimes --add Microsoft.VisualStudio.Workload.Universal  --passive --includeRecommended   --wait
-          # & $vsInstaller --add "Microsoft.VisualStudio.Workload.NativeDesktop"
-          # vs_installer.exe  --add Microsoft.VisualStudio.Workload.ManagedDesktop --add Microsoft.VisualStudio.Workload.Universal --includeRecommended --quiet --wait
 
-      - name: List Visual Studio Components
-        run: |
-          '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -products * -requires Microsoft.VisualStudio.Workload.Universal -format json'
-          vswhere
-          # & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" --add "Microsoft.VisualStudio.Workload.NativeDesktop"
-          # msbuild
-          
       # - name: Set up Python
         # uses: actions/setup-python@v2
         # with:
           # python-version: '3.11.x'  # 指定 3.11 的次版本
 
-      - name: Install Visual Studio components
-        run: |
-          .\install_visual_studio_22.ps1
-          # choco install visualstudio2022community --version=17.0.0 --params "/IncludeRecommended"
-          # refreshenv
+      - name: Cache python dependency directory
+        uses: actions/cache@v3
+        with:
+          path: .venv/
+          key: ${{ runner.os }}-python-venv-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-python-venv-
 
       - name: Install dependencies
         run: |
           .\venvUtils\ensureAndActivate.bat
-          # pip install -r requirements.txt
-          pip install scons
+
 
       - name: Check Visual Studio Installation
         run: |
@@ -101,16 +85,11 @@ jobs:
           & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x86
           cl 
           echo "Using MSVC version: $env:MSVC_VERSION"
-          .\scons.BAT
-          .\scons.BAT source
+          # .\scons.BAT
+          .\scons.BAT -j2 source
           .\scons.bat  -j 2 dist
-          # ls -n source\lib
-          # ls -n build\x86\microsoft-ui-uiautomation
+          .\scons\bat   launcher
           ls -n output
-          pwd          
-          # scons   source
-          # scons  dist
-          # .\scons\bat   launcher
 
       - name: Upload output
         uses: actions/upload-artifact@v4
@@ -171,9 +150,6 @@ jobs:
       - name: Install dependencies
         run: |
           .\venvUtils\ensureAndActivate.bat
-          # pip install -r requirements.txt
-          pip install scons
-
       - name: Check Visual Studio Installation
         run: |
           # 使用 vswhere 检查 Visual Studio 版本
@@ -210,12 +186,12 @@ jobs:
         # continue-on-error: true
         run: |
           $env:MSVC_VERSION = "19.41.34120"
-          # .\buildDist.bat
           py -3.11-32 -m venv .venv
           .\.venv\Scripts\activate.bat
           pip install -r .\requirements.txt
           .\scons.BAT source
           .\scons.bat dist
+          .\scons.bat launcher version=test1                                                                  
           # py -3.11-32 -m scons dist
 
 
