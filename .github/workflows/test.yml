@@ -38,10 +38,10 @@ jobs:
         with:
           path: |
             build/
-            # source/lib/
-          key: ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}
+            source/
+          key: ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}-${{ hashFiles('**/*.py') }}-${{ hashFiles('**/*.cpp') }}
           restore-keys: |
-            ${{ runner.os }}-scons-build-
+            ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}-${{ hashFiles('**/*.py') }}-${{ hashFiles('**/*.cpp') }}
 
 
       - name: Cache python dependency directory
@@ -102,10 +102,10 @@ jobs:
         with:
           path: |
             build/
-            # source/lib/
-          key: ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}
+            source/
+          key: ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}-${{ hashFiles('**/*.py') }}-${{ hashFiles('**/*.cpp') }}
           restore-keys: |
-            ${{ runner.os }}-scons-build-
+            ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}-${{ hashFiles('**/*.py') }}-${{ hashFiles('**/*.cpp') }}
 
 
       - name: Cache python dependency directory
@@ -154,10 +154,10 @@ jobs:
         with:
           path: |
             build/
-            # source/lib/
-          key: ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}
+            source/
+          key: ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}-${{ hashFiles('**/*.py') }}-${{ hashFiles('**/*.cpp') }}
           restore-keys: |
-            ${{ runner.os }}-scons-build-
+            ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}-${{ hashFiles('**/*.py') }}-${{ hashFiles('**/*.cpp') }}
 
       - name: Cache python dependency directory
         uses: actions/cache@v4
