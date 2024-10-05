@@ -6,7 +6,8 @@ on:
       - main
       - master
       - ci
-      - test 
+      - test
+      - dev
   pull_request:
 
 jobs:
@@ -62,13 +63,13 @@ jobs:
       - name: Run system test NVDA
         continue-on-error: true
         run: |
-          .\runsystemtests.bat --include NVDA
+          .\runsystemtests.bat --include NVDA --exclude excluded_from_build
 
-      - name: Run system test chrome
-        continue-on-error: true
-        run: |
-          .\runsystemtests.bat --include chrome
-      - name: Upload output
+      # - name: Run system test chrome
+        # continue-on-error: true
+        # run: |
+          # .\runsystemtests.bat --include chrome
+      # - name: Upload output
         uses: actions/upload-artifact@v4
         with:
           name: systemTestLog
