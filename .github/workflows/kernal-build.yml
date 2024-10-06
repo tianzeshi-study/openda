@@ -41,17 +41,16 @@ jobs:
         run: cd kernel 
 
       - name: Build wheels
-        uses: PyO3/maturin-action@v1
-        with:
-          target: ${{ matrix.platform.target }}
-          args: --release --out dist --find-interpreter
-          sccache: 'true'
+        run: |
+          cd kernel
+          pip install maturin 
+          maturin build --release --out dist --find-interpreter
           manylinux: auto
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
           name: wheels-linux-${{ matrix.platform.target }}
-          path: dist
+          path: kernel/dist
 
   musllinux:
     runs-on: ${{ matrix.platform.runner }}
@@ -75,17 +74,16 @@ jobs:
         run: cd kernel 
 
       - name: Build wheels
-        uses: PyO3/maturin-action@v1
-        with:
-          target: ${{ matrix.platform.target }}
-          args: --release --out dist --find-interpreter
-          sccache: 'true'
+        run: |
+          cd kernel
+          pip install maturin 
+          maturin build --release --out dist --find-interpreter
           manylinux: musllinux_1_2
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
           name: wheels-musllinux-${{ matrix.platform.target }}
-          path: dist
+          path: kernel/dist
 
   windows:
     runs-on: ${{ matrix.platform.runner }}
@@ -109,16 +107,11 @@ jobs:
           cd kernel
           pip install maturin 
           maturin build --release --out dist --find-interpreter
-        # uses: PyO3/maturin-action@v1
-        # with:
-          # target: ${{ matrix.platform.target }}
-          # args: --release --out dist --find-interpreter
-          # sccache: 'true'
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
           name: wheels-windows-${{ matrix.platform.target }}
-          path: dist
+          path: kernel/dist
 
   macos:
     runs-on: ${{ matrix.platform.runner }}
@@ -138,16 +131,15 @@ jobs:
           python-version: 3.x
 
       - name: Build wheels
-        uses: PyO3/maturin-action@v1
-        with:
-          target: ${{ matrix.platform.target }}
-          args: --release --out dist --find-interpreter
-          sccache: 'true'
+        run: |
+          cd kernel
+          pip install maturin 
+          maturin build --release --out dist --find-interpreter
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
           name: wheels-macos-${{ matrix.platform.target }}
-          path: dist
+          path: kernel/dist
 
   sdist:
     runs-on: ubuntu-latest
@@ -165,7 +157,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: wheels-sdist
-          path: dist
+          path: kernel/dist
 
   release:
     name: Release
