@@ -411,8 +411,10 @@ if not isRunningOnSecureDesktop() and not config.isAppX:
 	import easeOfAccess
 	easeOfAccess.notify(3)
 try:
-	import core
-	core.main()
+	# import core
+	# core.main()
+	import kernel 
+	kernel.main()
 except:
 	log.critical("core failure",exc_info=True)
 	sys.exit(1)

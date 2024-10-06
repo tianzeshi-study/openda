@@ -8,6 +8,7 @@ on:
       - ci
       - test
       - dev
+      - kernel 
   pull_request:
 
 jobs:
