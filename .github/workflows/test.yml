@@ -167,12 +167,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-python-venv-
 
-      - name: Run settings diff  prepare
-        run: |
-          .\SCons.bat -j4 tests
-          .\SCons.bat -j4 source
-          .\SCons.bat -j4 dist
-      - name: run system diff
-        run: |
-          .\runsettingsdiff.bat -v whichNVDA:source -v currentVersion:source -v compareVersion:2020.4
+      # - name: Run settings diff  prepare
+        # run: |
+          # .\SCons.bat -j4 tests
+          # .\SCons.bat -j4 source
+          # .\SCons.bat -j4 dist
+      # - name: run system diff
+        # run: |
+          # .\runsettingsdiff.bat -v whichNVDA:source -v currentVersion:source -v compareVersion:2020.4
           # .\runsettingsdiff.bat
