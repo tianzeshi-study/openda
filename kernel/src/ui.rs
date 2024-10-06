@@ -1,5 +1,5 @@
 use pyo3::prelude::*;
-use pyo3::types::IntoPyDict;
+// use pyo3::types::IntoPyDict;
 
 #[pyfunction]
 pub fn message() -> PyResult<()> {
@@ -210,4 +210,11 @@ def reportTextCopiedToClipboard(text: Optional[str] = None):
 
         Ok(())
     })
+}
+
+// 定义 Python 模块 `ui`，并将 `message` 函数添加到该模块中
+#[pymodule]
+pub fn ui(py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(message, m)?)?;
+    Ok(())
 }
