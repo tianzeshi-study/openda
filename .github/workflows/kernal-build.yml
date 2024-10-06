@@ -36,12 +36,11 @@ jobs:
         run: |
           cd kernel
           pip install maturin
-          if [ "${{ matrix.platform.target }}" == "x86" ]; then
+          if ($env:matrix_platform_target -eq 'x86') {
             maturin build --release --out dist --find-interpreter --target i686-pc-windows-msvc
-          else
+          } else {
             maturin build --release --out dist --find-interpreter --target x86_64-pc-windows-msvc
-          fi
-
+          }
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
