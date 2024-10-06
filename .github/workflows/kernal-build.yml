@@ -106,6 +106,7 @@ jobs:
           architecture: ${{ matrix.platform.target }}
       - name: Build wheels
         run: |
+          cd kernel
           pip install maturin 
           maturin build --release --out dist --find-interpreter
         # uses: PyO3/maturin-action@v1
