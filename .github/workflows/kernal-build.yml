@@ -94,11 +94,8 @@ jobs:
         run: |
           .\rununittests.bat
 
-
-
-
       - name: Run system test NVDA
-        # continue-on-error: true
+        continue-on-error: true
         run: |
           .\runsystemtests.bat --include NVDA --exclude excluded_from_build
 
@@ -106,6 +103,8 @@ jobs:
       - name: Upload output
         uses: actions/upload-artifact@v4
         with:
-          name: systemTestLog
-          path: testOutput\system
+          name: TestLog
+          path: |
+            testOutput\system
+            testOutput\unit
 

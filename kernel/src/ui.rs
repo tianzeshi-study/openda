@@ -1,3 +1,12 @@
+use pyo3::prelude::*;
+use pyo3::types::IntoPyDict;
+
+#[pyfunction]
+pub fn message() -> PyResult<()> {
+    // Initialize the Python interpreter
+    Python::with_gil(|py| {
+        let code = r#"
+
 """User interface functionality.
 This refers to the user interface presented by the screen reader alone, not the graphical user interface.
 See L{gui} for the graphical user interface.
@@ -180,3 +189,25 @@ def reportTextCopiedToClipboard(text: Optional[str] = None):
 		# {text} is replaced by the copied text.
 		brailleText=_("Copied: {text}").format(text=text)
 	)
+
+                "#;
+        // Import the Python module (example.py should be in the working directory)
+        let ui = PyModule::import_bound(py, "ui")?;
+        // let ui = PyModule::from_code_bound(py, code, "rs_kernel.py", "kernel_ui")?;
+        let _message: PyObject = ui.getattr("message")?.call1(("hello world from rust", ))?.into();
+
+        // Get the class `MyClass` from the module
+        // let my_class = example.getattr("MyClass")?;
+
+
+        // Create an instance of `MyClass` with parameters 5 and 10
+        // let instance = my_class.call1((5, 10))?;
+
+        // Call the `add` method of the instance
+        // let result: i32 = instance.call_method0("add")?.extract()?;
+
+        // println!("The result of add is: {}", result); // Output: The result of add is: 15
+
+        Ok(())
+    })
+}

@@ -1,4 +1,5 @@
 mod core;
+mod ui;
 use pyo3::prelude::*;
 
 /// Formats the sum of two numbers as string.
@@ -12,6 +13,8 @@ fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
 fn kernel(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
     m.add_function(wrap_pyfunction!(core::main, m)?)?;
+    m.add_function(wrap_pyfunction!(ui::message, m)?)?;
     Ok(())
 }
+ 
  
