@@ -15,131 +15,37 @@ permissions:
   contents: read
 
 jobs:
-  linux:
+  build:
     runs-on: ${{ matrix.platform.runner }}
     strategy:
       matrix:
         platform:
-          - runner: ubuntu-latest
-            target: x86_64
-          - runner: ubuntu-latest
-            target: x86
-          - runner: ubuntu-latest
-            target: aarch64
-          - runner: ubuntu-latest
-            target: armv7
-          - runner: ubuntu-latest
-            target: s390x
-          - runner: ubuntu-latest
-            target: ppc64le
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.x
-      - name: change directory 
-        run: cd kernel 
-
-      - name: Build wheels
-        run: |
-          cd kernel
-          pip install maturin 
-          maturin build --release --out dist --find-interpreter
-          manylinux: auto
-      - name: Upload wheels
-        uses: actions/upload-artifact@v4
-        with:
-          name: wheels-linux-${{ matrix.platform.target }}
-          path: kernel/dist
-
-  musllinux:
-    runs-on: ${{ matrix.platform.runner }}
-    strategy:
-      matrix:
-        platform:
-          - runner: ubuntu-latest
-            target: x86_64
-          - runner: ubuntu-latest
-            target: x86
-          - runner: ubuntu-latest
-            target: aarch64
-          - runner: ubuntu-latest
-            target: armv7
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.x
-      - name: change directory 
-        run: cd kernel 
-
-      - name: Build wheels
-        run: |
-          cd kernel
-          pip install maturin 
-          maturin build --release --out dist --find-interpreter
-          manylinux: musllinux_1_2
-      - name: Upload wheels
-        uses: actions/upload-artifact@v4
-        with:
-          name: wheels-musllinux-${{ matrix.platform.target }}
-          path: kernel/dist
-
-  windows:
-    runs-on: ${{ matrix.platform.runner }}
-    strategy:
-      matrix:
-        platform:
-          # - runner: windows-latest
-            # target: x64
           - runner: windows-latest
             target: x86
+          - runner: windows-latest
+            target: x64
     steps:
       - uses: actions/checkout@v4
-      - name: change directory 
-        run: cd kernel 
-      - uses: actions/setup-python@v5
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: 3.x
           architecture: ${{ matrix.platform.target }}
-      - name: Build wheels
+
+      - name: Install maturin and build wheels
         run: |
-          cd kernel
-          pip install maturin 
-          maturin build --release --out dist --find-interpreter
+          pip install maturin
+          if [ "${{ matrix.platform.target }}" == "x86" ]; then
+            maturin build --release --out dist --find-interpreter --target i686-pc-windows-msvc
+          else
+            maturin build --release --out dist --find-interpreter --target x86_64-pc-windows-msvc
+          fi
+
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
           name: wheels-windows-${{ matrix.platform.target }}
-          path: kernel/dist
-
-  macos:
-    runs-on: ${{ matrix.platform.runner }}
-    strategy:
-      matrix:
-        platform:
-          - runner: macos-12
-            target: x86_64
-          - runner: macos-14
-            target: aarch64
-    steps:
-      - uses: actions/checkout@v4
-      - name: change directory 
-        run: cd kernel 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.x
-
-      - name: Build wheels
-        run: |
-          cd kernel
-          pip install maturin 
-          maturin build --release --out dist --find-interpreter
-      - name: Upload wheels
-        uses: actions/upload-artifact@v4
-        with:
-          name: wheels-macos-${{ matrix.platform.target }}
-          path: kernel/dist
+          path: dist
 
   sdist:
     runs-on: ubuntu-latest
