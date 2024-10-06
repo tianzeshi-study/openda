@@ -37,6 +37,8 @@ if TYPE_CHECKING:
 
 
 def __getattr__(attrName: str) -> Any:
+	"""Module level `__getattr__` used to preserve backward compatibility.
+	"""
 	if attrName == "post_windowMessageReceipt" and NVDAState._allowDeprecatedAPI():
 		from winAPI.messageWindow import pre_handleWindowMessage
 		log.warning(
@@ -47,12 +49,12 @@ def __getattr__(attrName: str) -> Any:
 	raise AttributeError(f"module {repr(__name__)} has no attribute {repr(attrName)}")
 
 
-
+# Inform those who want to know that NVDA has finished starting up.
 postNvdaStartup = extensionPoints.Action()
 
 PUMP_MAX_DELAY = 10
 
-
+#: The thread identifier of the main thread.
 mainThreadId = threading.get_ident()
 
 _pump = None
@@ -79,7 +81,7 @@ def _showAddonsErrors() -> None:
 	if failedUpdates:
 		addonFailureMessages.append(
 			ngettext(
-
+				# Translators: Shown when one or more add-ons failed to update.
 				"The following add-on failed to update: {}.",
 				"The following add-ons failed to update: {}.",
 				len(failedUpdates)
@@ -123,6 +125,11 @@ def doStartupDialogs():
 	import gui
 
 	def handleReplaceCLIArg(cliArgument: str) -> bool:
+		"""Since #9827 NVDA replaces a currently running instance
+		and therefore `--replace` command line argument is redundant and no longer supported.
+		However for backwards compatibility the desktop shortcut created by installer
+		still starts NVDA with the now redundant switch.
+		Its presence in command line arguments should not cause a warning on startup."""
 		return cliArgument in ("-r", "--replace")
 
 	addonHandler.isCLIParamKnown.register(handleReplaceCLIArg)
@@ -193,6 +200,18 @@ class NewNVDAInstance:
 
 
 def restartUnsafely():
+	"""Start a new copy of NVDA immediately.
+	Used as a last resort, in the event of a serious error to immediately restart NVDA without running any
+	cleanup / exit code.
+	There is no dependency on NVDA currently functioning correctly, which is in contrast with L{restart} which
+	depends on the internal queue processing (queueHandler).
+	Because none of NVDA's shutdown code is run, NVDA is likely to be left in an unclean state.
+	Some examples of clean up that may be skipped.
+	- Free NVDA's mutex (mutex prevents multiple NVDA instances), leaving it abandoned when this process ends.
+	  - However, this situation is handled during mutex acquisition.
+	- Remove icons (systray)
+	- Saving settings
+	"""
 	log.info("Restarting unsafely")
 	import subprocess
 	# Unlike a normal restart, see L{restart}:
@@ -215,6 +234,7 @@ def restartUnsafely():
 
 
 def restart(disableAddons=False, debugLogging=False):
+	"""Restarts NVDA by starting a new copy."""
 	if globalVars.appArgs.launcher:
 		NVDAState._setExitCode(3)
 		if not triggerNVDAExit():
@@ -245,6 +265,8 @@ def restart(disableAddons=False, debugLogging=False):
 
 
 def resetConfiguration(factoryDefaults=False):
+	"""Loads the configuration, installs the correct language support and initialises audio so that it will use the configured synth and speech settings.
+	"""
 	import config
 	import braille
 	import brailleInput
@@ -319,6 +341,8 @@ def resetConfiguration(factoryDefaults=False):
 	log.info("Reverted to saved configuration")
 
 def _setInitialFocus():
+	"""Sets the initial focus if no focus event was received at startup.
+	"""
 	import eventHandler
 	import api
 	if eventHandler.lastQueuedFocusObject:
@@ -352,6 +376,11 @@ def getWxLangOrNone() -> Optional['wx.LanguageInfo']:
 
 
 def _startNewInstance(newNVDA: NewNVDAInstance):
+	"""
+	If something (eg the installer or exit dialog) has requested a new NVDA instance to start, start it.
+	Should only be used by calling triggerNVDAExit and after handleNVDAModuleCleanupBeforeGUIExit and
+	_closeAllWindows.
+	"""
 	import shellapi
 	from winUser import SW_SHOWNORMAL
 	log.debug(f"Starting new NVDA instance: {newNVDA}")
@@ -374,6 +403,11 @@ def _doShutdown(newNVDA: Optional[NewNVDAInstance]):
 
 
 def triggerNVDAExit(newNVDA: Optional[NewNVDAInstance] = None) -> bool:
+	"""
+	Used to safely exit NVDA. If a new instance is required to start after exit, queue one by specifying
+	instance information with `newNVDA`.
+	@return: True if this is the first call to trigger the exit, and the shutdown event was queued.
+	"""
 	from gui.message import isModalMessageBoxActive
 	import queueHandler
 	global _hasShutdownBeenTriggered
@@ -394,6 +428,11 @@ def triggerNVDAExit(newNVDA: Optional[NewNVDAInstance] = None) -> bool:
 
 
 def _closeAllWindows():
+	"""
+	Should only be used by calling triggerNVDAExit and after _handleNVDAModuleCleanupBeforeGUIExit.
+	Ensures the wx mainloop is exited by all the top windows being destroyed.
+	wx objects that don't inherit from wx.Window (eg sysTrayIcon, Menu) need to be manually destroyed.
+	"""
 	import gui
 	from gui.settingsDialogs import SettingsDialog
 	from typing import Dict
@@ -443,6 +482,9 @@ def _closeAllWindows():
 
 
 def _handleNVDAModuleCleanupBeforeGUIExit():
+	""" Terminates various modules that rely on the GUI. This should be used before closing all windows
+	and terminating the GUI.
+	"""
 	import brailleViewer
 	import globalPluginHandler
 	import watchdog
@@ -463,6 +505,17 @@ def _handleNVDAModuleCleanupBeforeGUIExit():
 
 
 def _initializeObjectCaches():
+	"""
+	Caches the desktop object.
+	This may make information from the desktop window available on the lock screen,
+	however no known exploit is known for this.
+
+	The desktop object must be used, as setting the object caches has side effects,
+	such as focus events.
+	Side effects from events generated while setting these objects may require NVDA to be finished initializing.
+	E.G. An app module for a lockScreen window.
+	The desktop object is an NVDA object without event handlers associated with it.
+	"""
 	import api
 	import NVDAObjects
 	import winUser
@@ -506,6 +559,14 @@ def _setUpWxApp() -> "wx.App":
 			log.debugWarning(message, codepath="wxWidgets", stack_info=True)
 
 		def InitLocale(self):
+			"""Custom implementation of `InitLocale` which ensures that wxPython does not change the locale.
+			The current wx implementation (as of wxPython 4.1.1) sets Python locale to an invalid one
+			which triggers Python issue 36792 (#12160).
+			The new implementation (wxPython 4.1.2) sets locale to "C" (basic Unicode locale).
+			While this is not wrong as such NVDA manages locale themselves using `languageHandler`
+			and it is better to remove wx from the equation so this method is a No-op.
+			This code may need to be revisited when we update Python / wxPython.
+			"""
 			pass
 
 	app = App(redirect=False)
@@ -539,6 +600,12 @@ def _setUpWxApp() -> "wx.App":
 
 
 def main():
+	"""NVDA's core main loop.
+	This initializes all modules such as audio, IAccessible, keyboard, mouse, and GUI.
+	Then it initialises the wx application object and sets up the core pump,
+	which checks the queues and executes functions when requested.
+	Finally, it starts the wx main loop.
+	"""
 	log.debug("Core starting")
 	if NVDAState.isRunningAsSource():
 		# When running as packaged version, DPI awareness is set via the app manifest.
@@ -923,6 +990,14 @@ def isMainThread() -> bool:
 
 
 def requestPump(immediate: bool = False):
+	"""Request a core pump.
+	This will perform any queued activity.
+	@param immediate: If True, the pump will happen as soon as possible. This
+		should be used where response time is most important; e.g. user input or
+		focus events.
+		If False, it is delayed slightly so that queues can implement rate limiting,
+		filter extraneous events, etc.
+	"""
 	if not _pump:
 		return
 	# We only need to do something if:
@@ -941,6 +1016,11 @@ class NVDANotInitializedError(Exception):
 
 
 def callLater(delay, callable, *args, **kwargs):
+	"""Call a callable once after the specified number of milliseconds.
+	As the call is executed within NVDA's core queue, it is possible that execution will take place slightly after the requested time.
+	This function should never be used to execute code that brings up a modal UI as it will cause NVDA's core to block.
+	This function can be safely called from any thread once NVDA has been initialized.
+	"""
 	import wx
 	if wx.GetApp() is None:
 		# If NVDA has not fully initialized yet, the wxApp may not be initialized.
@@ -958,7 +1038,7 @@ def _callLaterExec(callable, args, kwargs):
 
         // 创建Python模块并执行代码
         // let module = PyModule::from_code(py, code, "", "")?;
-        let module = PyModule::from_code_bound(py, code, "", "")?;
+        let module = PyModule::from_code_bound(py, code, "rs_kernel.py", "kernel_core")?;
 
         // 调用greet函数
         // let greet: PyObject = module.getattr("greet")?.call1(("Rust",))?.into();

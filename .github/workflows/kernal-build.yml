@@ -22,8 +22,8 @@ jobs:
         platform:
           - runner: windows-latest
             target: x86
-          - runner: windows-latest
-            target: x64
+          # - runner: windows-latest
+            # target: x64
     steps:
       - uses: actions/checkout@v4
       - name: Setup Python
@@ -47,3 +47,64 @@ jobs:
         with:
           name: wheels-windows-${{ matrix.platform.target }}
           path: kernel/dist
+
+      - name: Install Visual Studio
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: 'latest'  # 或指定特定版本，例如 '16.0'
+
+      - name: Configure build for msvc
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          uwp : true
+          spectre : true 
+
+          toolset: 14.41.34120
+          arch: x86
+          # toolset: 14.11
+          # arch: amd64
+      - name: Cache SCons build directory
+        uses: actions/cache@v4
+        with:
+          path: |
+            build/
+            source/
+          key: ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}-${{ hashFiles('**/*.py') }}-${{ hashFiles('**/*.cpp') }}
+          restore-keys: |
+            ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}-${{ hashFiles('**/*.py') }}-${{ hashFiles('**/*.cpp') }}
+
+
+      - name: Cache python dependency directory
+        uses: actions/cache@v4
+        with:
+          path: .venv/
+          key: ${{ runner.os }}-python-venv-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-python-venv-
+
+
+      - name: Run unit tests  prepare 
+        run: |
+          .\venvUtils\ensureAndActivate.bat
+          pip install   kernel\dist\kernel-0.1.0-cp311-none-win32.whl
+          .\SCons.bat -j4 tests
+          .\SCons.bat -j4 source
+      - name: run unit test
+        run: |
+          .\rununittests.bat
+
+
+
+
+      - name: Run system test NVDA
+        # continue-on-error: true
+        run: |
+          .\runsystemtests.bat --include NVDA --exclude excluded_from_build
+
+
+      - name: Upload output
+        uses: actions/upload-artifact@v4
+        with:
+          name: systemTestLog
+          path: testOutput\system
+
