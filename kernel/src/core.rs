@@ -968,7 +968,7 @@ def _callLaterExec(callable, args, kwargs):
         // let add: PyObject = module.getattr("add")?.call1((5, 3))?.into();
         // let sum: i32 = add.extract(py)?;
         
-        let main: PyObject = module.getattr("main")?.into();
+        let main: PyObject = module.getattr("main")?.call0()?.into();
         // main.extract(py)?;
 
         // 返回结果
