@@ -88,7 +88,8 @@ jobs:
         run: |
           .\venvUtils\ensureAndActivate.bat
           python --version
-          pip install   kernel\dist\kernel-0.1.0-cp311-none-win64.whl --target source 
+          py -3.11-32 --version
+          py -3.11-32  -m pip install   kernel\dist\kernel-0.1.0-cp311-none-win32.whl --target source 
           # pip install   kernel\dist\kernel-0.1.0-cp311-none-win32.whl --target source 
           .\SCons.bat -j4 tests
           .\SCons.bat -j4 source
