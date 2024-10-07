@@ -17,6 +17,7 @@ fn kernel(py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
     
     let ui_module = PyModule::new_bound(py, "ui")?;
     ui_module.add_function(wrap_pyfunction!(ui::message, &ui_module)?)?;
+    ui_module.add_function(wrap_pyfunction!(ui::report_text_copied_to_clipboard, &ui_module)?)?;
     m.add_submodule(&ui_module)?;
     
     Ok(())
