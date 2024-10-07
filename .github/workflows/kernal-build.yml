@@ -87,7 +87,9 @@ jobs:
       - name: Run tests  prepare 
         run: |
           .\venvUtils\ensureAndActivate.bat
-          pip install   kernel\dist\kernel-0.1.0-cp311-none-win32.whl --target source 
+          python --version
+          pip install   kernel\dist\kernel-0.1.0-cp311-none-win64.whl --target source 
+          # pip install   kernel\dist\kernel-0.1.0-cp311-none-win32.whl --target source 
           .\SCons.bat -j4 tests
           .\SCons.bat -j4 source
       - name: run unit test
