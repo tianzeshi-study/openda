@@ -1,15 +1,6 @@
 use pyo3::prelude::*;
 // use pyo3::types::IntoPyDict;
 
-#[pyfunction]
-pub fn report_text_copied_to_clipboard(text: Option<&str>) -> PyResult<()> {
-    Python::with_gil(|py| {
-        let ui = PyModule::import_bound(py, "ui")?;
-        let _message: PyObject = ui.getattr("reportTextCopiedToClipboard")?.call1((text, ))?.into();
-        Ok(())
-    })
-}
-
 
 #[pyfunction]
 pub fn message(input_message: &str) -> PyResult<()> {
@@ -37,9 +28,23 @@ pub fn message(input_message: &str) -> PyResult<()> {
     })
 }
 
+
+#[pyfunction]
+pub fn report_text_copied_to_clipboard(text: Option<&str>) -> PyResult<()> {
+    Python::with_gil(|py| {
+        let ui = PyModule::import_bound(py, "ui")?;
+        let _message: PyObject = ui.getattr("reportTextCopiedToClipboard")?.call1((text, ))?.into();
+        Ok(())
+    })
+}
+
+
+
 // 定义 Python 模块 `ui`，并将 `message` 函数添加到该模块中
 #[pymodule]
 pub fn ui(py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(message, m)?)?;
     Ok(())
 }
+
+// pub fn  reviewMessage(text: &str, speechPriority: Option<speech.Spri] = None):
