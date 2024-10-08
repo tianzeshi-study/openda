@@ -30,6 +30,7 @@ pub fn message(input_message: &str) -> PyResult<()> {
 
 
 #[pyfunction]
+#[pyo3(signature = (text=None))]
 pub fn report_text_copied_to_clipboard(text: Option<&str>) -> PyResult<()> {
     Python::with_gil(|py| {
         let ui = PyModule::import_bound(py, "ui")?;
@@ -42,7 +43,7 @@ pub fn report_text_copied_to_clipboard(text: Option<&str>) -> PyResult<()> {
 
 // 定义 Python 模块 `ui`，并将 `message` 函数添加到该模块中
 #[pymodule]
-pub fn ui(py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
+pub fn ui(_py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(message, m)?)?;
     Ok(())
 }
