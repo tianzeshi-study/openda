@@ -69,7 +69,7 @@ jobs:
         with:
           path: |
             build/
-            source/
+            # source/
           key: ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}-${{ hashFiles('**/*.py') }}-${{ hashFiles('**/*.cpp') }}
           restore-keys: |
             ${{ runner.os }}-scons-build-${{ hashFiles('**/SConstruct') }}-${{ hashFiles('**/SConscript') }}-${{ hashFiles('**/*.py') }}-${{ hashFiles('**/*.cpp') }}
@@ -87,7 +87,7 @@ jobs:
       - name: Run tests  prepare 
         run: |
           .\venvUtils\ensureAndActivate.bat
-          pip install   kernel\dist\kernel-0.1.0-cp311-none-win32.whl --TARGET SOURCE 
+          py -3.11-32 -m pip install   kernel\dist\kernel-0.1.0-cp311-none-win32.whl --target source 
           .\SCons.bat -j4 tests
           .\SCons.bat -j4 source
       - name: run unit test
