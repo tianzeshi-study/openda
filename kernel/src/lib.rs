@@ -22,8 +22,10 @@ fn kernel(py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_submodule(&ui_module)?;
     
     let speech_module = PyModule::new_bound(py, "speech")?;
-    ui_module.add_function(wrap_pyfunction!(speech::speak, &speech_module)?)?;
+    speech_module.add_function(wrap_pyfunction!(speech::speak, &speech_module)?)?;
     m.add_submodule(&speech_module)?;
+    
+    m.add_class::<speech::SpeechVec>()?;
     
     Ok(())
     // });
