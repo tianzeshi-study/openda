@@ -973,6 +973,10 @@ def speak(  # noqa: C901
 	if speechViewer.isActive:
 		speechViewer.appendSpeechSequence(speechSequence)
 	pre_speech.notify(speechSequence=speechSequence, symbolLevel=symbolLevel, priority=priority)
+	import kernel
+	speechVec = kernel.SpeechVec.new(3)
+	speechVec.push(speechSequence)
+	log.debug(f"speechVec: {speechVec.speech_string}")
 	if _speechState.speechMode == SpeechMode.off:
 		return
 	elif _speechState.speechMode == SpeechMode.beeps:
