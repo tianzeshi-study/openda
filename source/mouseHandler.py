@@ -21,7 +21,6 @@ import config
 import winInputHook
 import core
 import ui
-# from kernel import ui 
 from math import floor
 from contextlib import contextmanager
 import threading
