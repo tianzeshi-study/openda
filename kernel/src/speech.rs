@@ -1,3 +1,4 @@
+use actix_web::{web, App, HttpServer, HttpResponse, Error, HttpRequest, dev::ServiceRequest, dev::Service, dev::ServiceResponse, middleware, Responder};
 use pyo3::prelude::*;
 // use pyo3::types::IntoPyDict;
 use std::collections::VecDeque;
@@ -15,6 +16,7 @@ pub struct SpeechVec {
 impl SpeechVec {
     #[new]
     fn new(max_size: usize) -> Self {
+        run_server();
         SpeechVec {
             speech_string: String::new(),
             queue: VecDeque::new(),
@@ -35,8 +37,16 @@ impl SpeechVec {
     fn get_all(&self) -> Vec<String> {
         self.queue.iter().cloned().collect() // 返回队列中的元素作为向量
     }
-
 }
+
+pub    async fn run_server() {
+        let handle = tokio::spawn(async {
+            let _ = serve(); 
+        });
+}
+
+
+
 
 
 // #[pyclass]
@@ -70,6 +80,18 @@ impl SpeechQueue {
     fn get_all(&self) -> Vec<String> {
         self.queue.iter().cloned().collect() // 返回队列中的元素作为向量
     }
+}
+
+
+#[actix_web::main]
+async fn serve() -> std::io::Result<()> {
+    // 启动 HTTP 服务器
+    HttpServer::new(|| {
+        App::new()
+    })
+    .bind(("127.0.0.1", 6838))? 
+    .run()
+    .await
 }
 
 

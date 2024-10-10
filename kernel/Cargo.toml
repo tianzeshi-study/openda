@@ -9,4 +9,6 @@ name = "kernel"
 crate-type = ["cdylib"]
 
 [dependencies]
+actix-web = "4.9.0"
 pyo3 = { version = "0.22.0", features = ["auto-initialize", "generate-import-lib"] }
+tokio = "1.40.0"
