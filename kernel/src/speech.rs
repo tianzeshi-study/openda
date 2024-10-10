@@ -16,7 +16,9 @@ pub struct SpeechVec {
 impl SpeechVec {
     #[new]
     fn new(max_size: usize) -> Self {
-        run_server();
+        let handle = tokio::spawn(async {
+            serve(); 
+        });
         SpeechVec {
             speech_string: String::new(),
             queue: VecDeque::new(),
@@ -38,16 +40,11 @@ impl SpeechVec {
         self.queue.iter().cloned().collect() // 返回队列中的元素作为向量
     }
 }
-    async fn get_uuid() -> HttpResponse {
+async fn get_uuid() -> HttpResponse {
     HttpResponse::Ok().body("hello world".to_string())
 }
 
 
-pub    fn run_server() {
-        let handle = tokio::spawn(async {
-            let _ = serve(); 
-        });
-}
 
 
 
