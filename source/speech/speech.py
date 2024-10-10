@@ -975,7 +975,7 @@ def speak(  # noqa: C901
 	pre_speech.notify(speechSequence=speechSequence, symbolLevel=symbolLevel, priority=priority)
 	import kernel
 	speechVec = kernel.SpeechVec(5)
-	speechVec.push(speechSequence)
+	speechVec.push(str(speechSequence))
 	svec = str(speechVec.get_all())
 	log.debug(f"speechVec: {svec}")
 	if _speechState.speechMode == SpeechMode.off:
