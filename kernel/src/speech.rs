@@ -25,7 +25,7 @@ impl SpeechVec {
     // 向队列中添加元素
     fn push(&mut self, element: String) {
         self.speech_string = element; 
-        if self.queue.len() == self.max_size {
+        if self.queue.len() >= self.max_size {
             self.queue.pop_front(); // 如果队列已满，移除最前面的元素
         }
         // self.queue.push_back(self.speech_string); // 添加新元素到队列末尾
