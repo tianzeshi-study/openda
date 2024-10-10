@@ -979,7 +979,7 @@ def speak(  # noqa: C901
 	# svec = str(speechVec.get_all())
 	# log.debug(f"speechVec: {svec}")
 	for i in speechSequence:
-		speechVec.push(i)
+		speechVec.push(str(i))
 		log.debug(i)
 	if _speechState.speechMode == SpeechMode.off:
 		return
