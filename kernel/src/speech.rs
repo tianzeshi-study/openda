@@ -16,9 +16,9 @@ pub struct SpeechVec {
 impl SpeechVec {
     #[new]
     fn new(max_size: usize) -> Self {
-        let handle = tokio::spawn(async {
-            serve(); 
-        });
+        // let handle = tokio::spawn(async {
+            // serve(); 
+        // });
         SpeechVec {
             speech_string: String::new(),
             queue: VecDeque::new(),
