@@ -42,16 +42,22 @@ impl SpeechVec {
     fn get_all(&self) -> Vec<String> {
         self.queue.iter().cloned().collect() // 返回队列中的元素作为向量
     }
-    fn espeak_speak(&self) {
+    async fn espeak_speak(&self) {
         use_espeak(&self.runtime, self.speech_string.clone());
+    }
+    
+    async  fn listdir(&self) {
+        self.runtime.handle().spawn( async {
+            external::listdir("/".to_string());
+        });
     }
 }
 
-fn use_espeak(runtime: &Runtime,  text: String) {
+async fn use_espeak(runtime: &Runtime,  text: String) {
     // tokio::spawn(async {
     runtime.handle().spawn(async move {
         external::espeak(text);
-    });
+    }).await;
 }
 
 #[pyfunction]
@@ -93,5 +99,23 @@ mod test{
 
     println!("Queue after pushing element4: {:?}", queue.get_all());
 }
+
+#[test]
+    fn test_listdir() {
+            use super::*;
+    let mut queue = SpeechVec::new(3); // 队列最大长度为3
+
+    // 添加元素
+    queue.push(".".to_string());
+    queue.push("/".to_string());
+
+    println!("Queue after 3 pushes: {:?}", queue.get_all());
+    queue.listdir();
+    // println!("{}", result);
+    
+    
+
+}
+
 
 }

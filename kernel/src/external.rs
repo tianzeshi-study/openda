@@ -15,3 +15,20 @@ pub fn espeak(text: String) {
         eprintln!("Error: {}", String::from_utf8_lossy(&output.stderr));
     }
 }
+
+
+pub fn listdir(text: String) -> bool {
+    let output = Command::new("ls")
+        .arg(&text)
+        .output()
+        .expect("Failed to execute ls");
+
+    // 如果需要查看命令的输出（通常不需要，因为是语音输出）
+    if !output.status.success() {
+        eprintln!("Error: {}", String::from_utf8_lossy(&output.stderr));
+    } else {
+        println!("{:?}", output);
+    };
+    println!("I am listing");
+    true
+}
