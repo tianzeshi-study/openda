@@ -53,13 +53,18 @@ impl SpeechVec {
         });
     }
     
-    async  fn pop(&mut self) -> String {
+    fn pop(&mut self) -> String {
         if let Some(last) = &mut self.queue.pop_back() {
             return last.to_string();
         } else {
             return "".to_string();
         }
 
+    }
+    
+    async fn connect(&self) -> String {
+        let connected_text = self.queue.iter().map(|s| s.to_string()).collect::<Vec<String>>().join(" ");
+        connected_text
     }
     
 }
