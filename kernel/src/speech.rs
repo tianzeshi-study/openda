@@ -42,6 +42,7 @@ impl SpeechVec {
     fn get_all(&self) -> Vec<String> {
         self.queue.iter().cloned().collect() // 返回队列中的元素作为向量
     }
+    
     async fn espeak_speak(&self) {
         use_espeak(&self.runtime, self.speech_string.clone());
     }
@@ -51,6 +52,16 @@ impl SpeechVec {
             external::listdir("/".to_string());
         });
     }
+    
+    async  fn pop(&mut self) -> String {
+        if let Some(last) = &mut self.queue.pop_back() {
+            return last.to_string();
+        } else {
+            return "".to_string();
+        }
+
+    }
+    
 }
 
 async fn use_espeak(runtime: &Runtime,  text: String) {

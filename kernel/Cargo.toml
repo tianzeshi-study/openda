@@ -11,4 +11,6 @@ crate-type = ["cdylib"]
 [dependencies]
 # actix-web = "4.9.0"
 pyo3 = { version = "0.22.0", features = ["auto-initialize", "generate-import-lib", "experimental-async"] }
+rayon = "1.10.0"
+# pyo3-asyncio = "0.20.0"
 tokio = {version="1.40.0", features=["full"]}
