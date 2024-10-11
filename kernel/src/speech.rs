@@ -1,6 +1,8 @@
 use pyo3::prelude::*;
 // use pyo3::types::IntoPyDict;
 use std::collections::VecDeque;
+use std::sync::Arc;
+use tokio::runtime::Runtime;
 
 use crate::external;
 
@@ -9,6 +11,7 @@ pub struct SpeechVec {
     #[pyo3(get, set)]
     speech_string: String,
     queue: VecDeque<String>,
+    runtime: Arc<Runtime>,
     #[pyo3(get, set)]
     max_size: usize, // 最大队列长度
 }
@@ -17,9 +20,11 @@ pub struct SpeechVec {
 impl SpeechVec {
     #[new]
     fn new(max_size: usize) -> Self {
+        let runtime = Arc::new(Runtime::new().unwrap());
         SpeechVec {
             speech_string: String::new(),
             queue: VecDeque::new(),
+            runtime,
             max_size,
         }
     }
@@ -38,12 +43,13 @@ impl SpeechVec {
         self.queue.iter().cloned().collect() // 返回队列中的元素作为向量
     }
     fn espeak_speak(&self) {
-        use_espeak(self.speech_string.clone());
+        use_espeak(&self.runtime, self.speech_string.clone());
     }
 }
 
-fn use_espeak(text: String) {
-    tokio::spawn(async {
+fn use_espeak(runtime: &Runtime,  text: String) {
+    // tokio::spawn(async {
+    runtime.handle().spawn(async move {
         external::espeak(text);
     });
 }
@@ -69,8 +75,9 @@ pub fn speech(py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
 #[cfg(test)]
 mod test{
 
-#[tokio::test]
-        async fn test_speech_vec() {
+// #[tokio::test]
+    #[test]
+    fn test_speech_vec() {
             use super::*;
     let mut queue = SpeechVec::new(3); // 队列最大长度为3
 
