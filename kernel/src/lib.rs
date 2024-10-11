@@ -1,4 +1,5 @@
 mod core;
+mod external;
 mod  speech;
 mod ui;
 use pyo3::prelude::*;

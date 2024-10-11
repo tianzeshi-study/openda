@@ -1,7 +1,8 @@
-use actix_web::{web, App, HttpServer, HttpResponse, Error, HttpRequest, dev::ServiceRequest, dev::Service, dev::ServiceResponse, middleware, Responder};
 use pyo3::prelude::*;
 // use pyo3::types::IntoPyDict;
 use std::collections::VecDeque;
+
+use crate::external;
 
 #[pyclass]
 pub struct SpeechVec {
@@ -16,9 +17,6 @@ pub struct SpeechVec {
 impl SpeechVec {
     #[new]
     fn new(max_size: usize) -> Self {
-        // let handle = tokio::spawn(async {
-            // serve(); 
-        // });
         SpeechVec {
             speech_string: String::new(),
             queue: VecDeque::new(),
@@ -39,28 +37,16 @@ impl SpeechVec {
     fn get_all(&self) -> Vec<String> {
         self.queue.iter().cloned().collect() // 返回队列中的元素作为向量
     }
-}
-async fn get_uuid() -> HttpResponse {
-    HttpResponse::Ok().body("hello world".to_string())
-}
-
-
-
-
-
-
-#[actix_web::main]
-async fn serve() -> std::io::Result<()> {
-    // 启动 HTTP 服务器
-    HttpServer::new(|| {
-        App::new()
-        .route("/", web::get().to(get_uuid))
-    })
-    .bind(("127.0.0.1", 6838))? 
-    .run()
-    .await
+    fn espeak_speak(&self) {
+        use_espeak(self.speech_string.clone());
+    }
 }
 
+fn use_espeak(text: String) {
+    tokio::spawn(async {
+        external::espeak(text);
+    });
+}
 
 #[pyfunction]
 pub fn speak(input_message: &str) -> PyResult<()> {
