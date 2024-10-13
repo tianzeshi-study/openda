@@ -54,3 +54,7 @@ source/locale/*/cldr.dic
 .vs
 .venv
 nvdaHelper/docs/
+
+source/kernel*.dist-info/                                                                        
+source/kernel/                                                                                        
+**.back
